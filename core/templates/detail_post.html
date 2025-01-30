@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ ad.title }} - Ad Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: flex-start; /* Align to the top */
+            padding: 20px; /* Add padding to the body */
+            margin: 0; /* Remove default margins */
+        }
+        .ad-detail {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 600px; /* Set a maximum width for the detail box */
+            width: 100%; /* Allow it to be responsive */
+            margin-bottom: 20px; /* Space below ad detail */
+        }
+        .ad-detail img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center; /* Center the title */
+        }
+        a {
+            display: block; /* Make the link a block element */
+            text-align: center; /* Center the link text */
+            margin-top: 20px; /* Add some space above the link */
+            color: #007BFF; /* Link color */
+            text-decoration: none; /* Remove underline */
+        }
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+        .form-container {
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="number"], input[type="file"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .delete-button {
+            background-color: #dc3545;
+        }
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        /* Comment section styles */
+        .comment-section {
+            margin-top: 20px;
+        }
+
+        .comment {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .comment p {
+            margin: 5px 0;
+        }
+
+        .reply-button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .reply-form {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+
+        .reply {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 1px solid #e0e0e0;
+            padding-left: 20px; /* Add padding to the left for replies */
+        }
+
+        .reply p {
+            margin: 5px 0;
+        }
+
+        h3 {
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin: 20px 0 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-detail">
+        <h1>{{ ad.title }}</h1>
+        <img src="{{ ad.post_image.url }}" alt="{{ ad.title }}">
+        <p><strong>Description:</strong> {{ ad.description }}</p>
+        <p><strong>User:</strong> {{ ad.customuser.username }}</p>
+        <a href="{% url 'home' %}">Back to Ads</a>
+    </div>
+
+    <div class="form-container">
+        <h2>Add a Comment:</h2>
+        <form action="{% url 'post_detail' ad.id %}" method="post">
+            {% csrf_token %}
+            <div>
+                <label for="comment-text">Comment:</label>
+                <textarea id="comment-text" name="text" rows="4" cols="50" required></textarea>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="comment-section">
+        <h3>Comments:</h3>
+        {% for comment in comments %}
+            <div class="comment">
+                <p><strong>{{ comment.user.username }}:</strong> {{ comment.comment_text }}</p>
+                <button class="reply-button" onclick="toggleReplyForm({{ comment.id }})">Reply</button>
+                <div class="reply-form" id="reply-form-{{ comment.id }}">
+                    <form action="{% url 'post_detail' ad.id %}" method="post">
+                        {% csrf_token %}
+                        <textarea name="text" placeholder="Write a reply..." required></textarea>
+                        <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                        <button type="submit">Submit Reply</button>
+                    </form>
+                </div>
+                {% for reply in comment.reply.all %}
+                    <div class="reply">
+                        <p><strong>{{ reply.user.username }}:</strong> {{ reply.comment_text }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function toggleReplyForm(commentId) {
+            const form = document.getElementById('reply-form-' + commentId);
+            form.style.display = form.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>

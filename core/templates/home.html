@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertising Site</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        nav {
+            margin: 20px 0;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .hero {
+            background: url('hero-image.jpg') no-repeat center center/cover;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        .hero h1 {
+            font-size: 3em;
+        }
+        .search-container {
+            max-width: 600px;
+            margin: 20px auto; /* Center and add margin */
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .featured-ads {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .ad {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .ad img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .ad:hover {
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #333;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1> Hi {{ user.username }} Welcome to Our Advertising Site</h1>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'user_post' %}">Your Post</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+        <a href="{% url 'post_ad' %}">Post an Ad</a>
+    </nav>
+</header>
+
+<div class="hero">
+    <h1>Your Ads, Our Reach!</h1>
+</div>
+
+<!-- Search Bar Section -->
+<div class="search-container">
+    <h2>Search Ads</h2>
+    <form method="get" action="{% url 'search' %}">
+        <input type="text" id="search-query" name="query" placeholder="Enter your search term..." required>
+        <button type="submit">Search</button>
+    </form>
+    
+    <div class="results">
+        {% if results %}
+            <h3>Search Results:</h3>
+            <ul>
+                {% for result in results %}
+                    <a href ="{% url 'post_detail' result.id %}"><li>{{ result.title }}</li></a>  <!-- تغییر دهید به فیلدهای مورد نظر -->
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </div>
+</div>
+
+<section class="featured-ads">
+    {% for ads in post %}
+        <div class="ad">
+            <img src="{{ ads.post_image.url }}" alt="{{ ads.title }}">
+            <h2>{{ ads.title }}</h2>
+            <p>{{ ads.description }}</p>
+            <a href="{% url 'post_detail' ads.id %}">Learn More</a>
+        </div>
+    {% endfor %}
+</section>
+
+<footer>
+    <p>&copy; 2024 Advertising Site. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

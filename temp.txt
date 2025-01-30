@@ -1,0 +1,223 @@
+<header>
+    <div class="container">
+        <h1>Welcome to AdSite</h1>
+        <p>Your one-stop destination for the best advertisements!</p>
+        <form action="{% url 'search' %}" method="get" class="search-bar">
+            <input type="text" name="query" placeholder="Search ads..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</header>-->
+
+<!-- Featured Ads Section 
+<section class="featured-ads">
+    <div class="container">
+        <h2>Featured Ads</h2>
+        <div class="ads-list">
+            {% for ad in featured_ads %}
+            <div class="ad-item">
+                <img src="{{ ad.image.url }}" alt="{{ ad.title }}">
+                <h3>{{ ad.title }}</h3>
+                <p>{{ ad.short_description }}</p>
+                <a href="{% url 'ad_detail' ad.id %}" class="view-details">View Details</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>-->
+
+<!-- Recent Ads Section 
+<section class="recent-ads">
+    <div class="container">
+        <h2>Recent Ads</h2>
+        <div class="ads-list">
+            {% for ad in recent_ads %}
+            <div class="ad-item">
+                <img src="{{ ad.image.url }}" alt="{{ ad.title }}">
+                <h3>{{ ad.title }}</h3>
+                <p>{{ ad.short_description }}</p>
+                <a href="{% url 'ad_detail' ad.id %}" class="view-details">View Details</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>-->
+
+<!-- Categories Section 
+<section class="categories">
+    <div class="container">
+        <h2>Categories</h2>
+        <div class="category-list">
+            {% for category in categories %}
+            <div class="category-item">
+                <a href="{% url 'category_ads' category.id %}">{{ category.name }}</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>-->
+
+<!-- Footer 
+<footer>
+    <div class="container">
+        <p>&copy; 2024 AdSite. All Rights Reserved.</p>
+    </div>
+</footer>-->
+
+
+
+
+<div class="ad-detail">
+    <h1>{{ ads.title }}</h1>
+    <img src="{{ ads.post_image.url }}" alt="{{ ads.title }}">
+    <p><strong>Description:</strong> {{ ads.description }}</p>
+    <a href="">Back to Ads</a>
+</div>
+
+
+
+
+
+
+
+--------------------------------------------------------
+--------------------------------------------------------
+
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertisement Site</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background: #f7f7f7;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            color: #333;
+        }
+
+        .search-bar {
+            margin-top: 10px;
+        }
+
+        .search-bar input {
+            padding: 8px;
+            width: 70%;
+            margin-right: 10px;
+        }
+
+        .search-bar button {
+            padding: 8px 15px;
+            background: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background: #555;
+        }
+
+        /* Featured Ads and Recent Ads */
+        section {
+            margin: 20px 0;
+        }
+
+        .ads-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .ad-item {
+            flex: 1 1 30%;
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .ad-item img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .view-details {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            background: #333;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .view-details:hover {
+            background: #555;
+        }
+
+        /* Categories */
+        .categories .category-list {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .category-item {
+            background: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .category-item a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .category-item a:hover {
+            color: #000;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <h1>hello {{ user.username }}</h1>
+    {% else %}
+        <h1>hello gust</h1>
+    {% endif %}
+
+</body>
+</html>
